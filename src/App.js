@@ -16,21 +16,44 @@ Instrucciones:
 */
 
 document.addEventListener('DOMContentLoaded', function() {
-    //Lógica principal de la aplicación
     const appElement = document.getElementById('app');
 
-    //Lógica para implementar el Tablero del Juego
+    // Lógica para implementar el Tablero del Juego
     function createBoard() {
         const boardElement = document.createElement('div');
         boardElement.classList.add('board');
 
-        //Implementación de la lógica para crear las celdas del tablero
-        //Utilizar bucles for para generar las filas y columnas
+        // Utilizar bucles for para generar las filas y columnas
+        for (let row = 0; row < 7; row++) {
+            const rowElement = document.createElement('div');
+            rowElement.classList.add('row');
+
+            for (let col = 0; col < 6; col++) {
+                const cellElement = createCell(row, col);
+                rowElement.appendChild(cellElement);
+            }
+
+            boardElement.appendChild(rowElement);
+        }
 
         appElement.appendChild(boardElement);
     }
 
-    createBoard();
+    // Lógica para implementar las celdas
+    function createCell(row, col) {
+        const cellElement = document.createElement('div');
+        cellElement.classList.add('cell');
+        cellElement.dataset.row = row;
+        cellElement.dataset.col = col;
+        
+        //Agregar un evento de clic a cada celda
+        cellElement.addEventListener('Click', function() {
+            handleCellClick(row, col);
+        });
 
-    //Implementación de las fichas 
+        return cellElement;
+    }
+
+    // Llamada a la función para crear el tablero
+    createBoard();
 });

@@ -8,19 +8,43 @@
 
 .board {
     display: grid;
-    grid-template-columns: repeat(7,50px);
-    grid-template-rows: repeat(6,50px) ;
+    grid-template-columns: repeat(7,70px);
+    grid-template-rows: repeat(6,70px) ;
     gap: 5px;
-    border: 2px solid #333
+    border: 2px solid #000000;
+    /* background-color: rgb(237, 163, 66); */
 }
 
 .cell {
-    width: 50px;
-    height: 50px;
-    background-color: #fff;
-    border: 1px solid #ccc;
+    width: 70px;
+    height: 70px;
+    background-color: rgb(68, 161, 228);
+    border: 2px solid #000000;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 20px;
+}
+
+/* Añade estilos para las líneas */
+.row::after {
+    content: '';
+    flex-grow: 1;
+    border-right: 1px solid #ccc;
+}
+
+.ficha1 {
+    background-color: red;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+}
+
+.ficha2 {
+    background-color: yellow;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
 }
