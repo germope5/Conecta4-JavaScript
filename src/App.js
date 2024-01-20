@@ -17,13 +17,14 @@ Instrucciones:
 
 document.addEventListener('DOMContentLoaded', function() {
     const appElement = document.getElementById('app');
+    let currentPlayer = 'red';
+    let redScore = 0;
+    let yellowScore = 0;
 
-    // Lógica para implementar el Tablero del Juego
     function createBoard() {
         const boardElement = document.createElement('div');
         boardElement.classList.add('board');
 
-        // Utilizar bucles for para generar las filas y columnas
         for (let row = 0; row < 7; row++) {
             const rowElement = document.createElement('div');
             rowElement.classList.add('row');
@@ -39,21 +40,76 @@ document.addEventListener('DOMContentLoaded', function() {
         appElement.appendChild(boardElement);
     }
 
-    // Lógica para implementar las celdas
     function createCell(row, col) {
         const cellElement = document.createElement('div');
         cellElement.classList.add('cell');
         cellElement.dataset.row = row;
         cellElement.dataset.col = col;
-        
-        //Agregar un evento de clic a cada celda
-        cellElement.addEventListener('Click', function() {
+
+        cellElement.addEventListener('click', function() {
             handleCellClick(row, col);
         });
 
         return cellElement;
     }
 
-    // Llamada a la función para crear el tablero
+    function handleCellClick(row, col) {
+        const cellElement = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+
+        if (!cellElement.classList.contains('occupied')) {
+            const playerColor = (currentPlayer === 'red') ? 'red' : 'yellow';
+
+            cellElement.classList.add(playerColor, 'occupied');
+
+            if (checkForWin(row, col)) {
+                // Si hay 4 fichas consecutivas, incrementa el contador de puntos
+                if (currentPlayer === 'red') {
+                    redScore++;
+                    console.log('Puntos del jugador rojo:', redScore);
+                } else {
+                    yellowScore++;
+                    console.log('Puntos del jugador amarillo:', yellowScore);
+                }
+                resetBoard();
+            } else {
+                switchPlayer();
+            }
+        }
+    }
+
+    function checkForWin(row, col) {
+        // Implementa la lógica para verificar si hay 4 fichas consecutivas
+        // en cualquier dirección (horizontal, vertical, diagonal).
+        // Puedes utilizar funciones auxiliares para hacerlo más manejable.
+        return checkHorizontal(row, col) || checkVertical(row, col) || checkDiagonal(row, col);
+    }
+
+    function checkHorizontal(row, col) {
+        // Implementa la lógica de verificación horizontal aquí
+    }
+
+    function checkVertical(row, col) {
+        // Implementa la lógica de verificación vertical aquí
+    }
+
+    function checkDiagonal(row, col) {
+        // Implementa la lógica de verificación diagonal aquí
+    }
+
+    function switchPlayer() {
+        currentPlayer = (currentPlayer === 'red') ? 'yellow' : 'red';
+    }
+
+    function resetBoard() {
+        // Implementa la lógica para reiniciar el tablero, si es necesario.
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            cell.classList.remove('red', 'yellow', 'occupied');
+        });
+
+        //Reiniciar el jugador actual a 'red'
+        currentPlayer = 'red';
+    }
+
     createBoard();
 });
