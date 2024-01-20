@@ -78,36 +78,135 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function checkForWin(row, col) {
-        // Implementa la lógica para verificar si hay 4 fichas consecutivas
-        // en cualquier dirección (horizontal, vertical, diagonal).
-        // Puedes utilizar funciones auxiliares para hacerlo más manejable.
-        return checkHorizontal(row, col) || checkVertical(row, col) || checkDiagonal(row, col);
+        return (
+            checkHorizontal(row, col) ||
+            checkVertical(row, col) ||
+            checkDiagonalDerecha(row, col) ||
+            checkDiagonalIzquierda(row, col)
+        );
     }
 
     function checkHorizontal(row, col) {
-        // Implementa la lógica de verificación horizontal aquí
+        const playerColor = (currentPlayer === 'red') ? 'red' : 'yellow';
+        
+        // Verificar hacia la derecha e izquierda
+        let consecutiveRight = 0;
+        for (let i = col; i < 7; i++) {
+            const cellElement = document.querySelector(`[data-row="${row}"][data-col="${i}"]`);
+            if (cellElement && cellElement.classList.contains(playerColor)) {
+                consecutiveRight++;
+            } else {
+                break;
+            }
+        }
+    
+        let consecutiveLeft = 0;
+        for (let i = col - 1; i >= 0; i--) {
+            const cellElement = document.querySelector(`[data-row="${row}"][data-col="${i}"]`);
+            if (cellElement && cellElement.classList.contains(playerColor)) {
+                consecutiveLeft++;
+            } else {
+                break;
+            }
+        }
+    
+        // Comprobar si hay 4 fichas consecutivas en cualquier dirección
+        return (consecutiveRight + consecutiveLeft) > 3;
     }
-
+    
     function checkVertical(row, col) {
-        // Implementa la lógica de verificación vertical aquí
+        const playerColor = (currentPlayer === 'red') ? 'red' : 'yellow';
+        
+        // Verificar hacia arriba
+        let consecutiveUp = 0;
+        for (let i = row; i < 7; i++) {
+            const cellElement = document.querySelector(`[data-row="${i}"][data-col="${col}"]`);
+            if (cellElement && cellElement.classList.contains(playerColor)) {
+                consecutiveUp++;
+            } else {
+                break;
+            }
+        }
+    
+        // Comprobar si hay 4 fichas consecutivas hacia arriba
+        return consecutiveUp >= 4;
     }
-
-    function checkDiagonal(row, col) {
-        // Implementa la lógica de verificación diagonal aquí
+    
+    function checkDiagonalDerecha(row, col) {
+        const playerColor = (currentPlayer === 'red') ? 'red' : 'yellow';
+    
+        // Verificar hacia arriba y a la derecha
+        let consecutiveUpRight = 0;
+        for (let i = 0; i < 7; i++) {
+            const newRow = row + i;
+            const newCol = col + i;
+            const cellElement = document.querySelector(`[data-row="${newRow}"][data-col="${newCol}"]`);
+            if (cellElement && cellElement.classList.contains(playerColor)) {
+                consecutiveUpRight++;
+            } else {
+                break;
+            }
+        }
+    
+        // Verificar hacia abajo y a la izquierda
+        let consecutiveDownLeft = 0;
+        for (let i = 1; i < 7; i++) {
+            const newRow = row - i;
+            const newCol = col - i;
+            const cellElement = document.querySelector(`[data-row="${newRow}"][data-col="${newCol}"]`);
+            if (cellElement && cellElement.classList.contains(playerColor)) {
+                consecutiveDownLeft++;
+            } else {
+                break;
+            }
+        }
+    
+        // Comprobar si hay 4 fichas consecutivas en la diagonal
+        return (consecutiveUpRight + consecutiveDownLeft) > 3;
     }
-
+    
+    function checkDiagonalIzquierda(row, col) {
+        const playerColor = (currentPlayer === 'red') ? 'red' : 'yellow';
+    
+        // Verificar hacia arriba y a la izquierda
+        let consecutiveUpLeft = 0;
+        for (let i = 0; i < 7; i++) {
+            const newRow = row + i;
+            const newCol = col - i;
+            const cellElement = document.querySelector(`[data-row="${newRow}"][data-col="${newCol}"]`);
+            if (cellElement && cellElement.classList.contains(playerColor)) {
+                consecutiveUpLeft++;
+            } else {
+                break;
+            }
+        }
+    
+        // Verificar hacia abajo y a la derecha
+        let consecutiveDownRight = 0;
+        for (let i = 1; i < 7; i++) {
+            const newRow = row - i;
+            const newCol = col + i;
+            const cellElement = document.querySelector(`[data-row="${newRow}"][data-col="${newCol}"]`);
+            if (cellElement && cellElement.classList.contains(playerColor)) {
+                consecutiveDownRight++;
+            } else {
+                break;
+            }
+        }
+    
+        // Comprobar si hay 4 fichas consecutivas en la diagonal
+        return (consecutiveUpLeft + consecutiveDownRight) > 3;
+    }
     function switchPlayer() {
         currentPlayer = (currentPlayer === 'red') ? 'yellow' : 'red';
     }
 
     function resetBoard() {
-        // Implementa la lógica para reiniciar el tablero, si es necesario.
         const cells = document.querySelectorAll('.cell');
         cells.forEach(cell => {
             cell.classList.remove('red', 'yellow', 'occupied');
         });
 
-        //Reiniciar el jugador actual a 'red'
         currentPlayer = 'red';
     }
 
